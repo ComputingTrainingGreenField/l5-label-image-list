@@ -2,7 +2,10 @@
     <Label class="action-bar-title" text="Browse"></Label>
 </ActionBar>
 
-<AbsoluteLayout>
-    <Label *ngFor="let item of itemList" [top]="item.y" [left]="item.x"  [text]="item.text"
-        style="color:white; background-color: blue; border-width: 4; border-color: black"></Label>
-</AbsoluteLayout>
+<GridLayout>
+        <Image src="~/app/images/2801.png"></Image>
+        <AbsoluteLayout>
+                <Label *ngFor="let item of itemList" [top]="item.y" [left]="item.x"  [text]="item.text"
+                style="color:white; background-color: blue; border-width: 4; border-color: black"></Label>
+        </AbsoluteLayout>
+</GridLayout>
