@@ -8,9 +8,9 @@ import { Component, OnInit } from "@angular/core";
 export class BrowseComponent implements OnInit {
     itemList = [
         {x:100, y:100, text:' A '},
-        {x:60, y:200, text:' B '},
-        {x:200, y:300, text:' C '},
-        {x:130, y:430, text:' D '},
+        {x:60, y:230, text:' B '},
+        {x:280, y:300, text:' C '},
+        {x:180, y:430, text:' D '},
     ]
 
     constructor() {
