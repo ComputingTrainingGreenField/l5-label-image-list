@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { TouchGestureEventData } from "tns-core-modules/ui/gestures/gestures";
 
 @Component({
     selector: "Browse",
@@ -20,5 +21,13 @@ export class BrowseComponent implements OnInit {
 
     ngOnInit(): void {
         // Use the "ngOnInit" handler to initialize data for the view.
+    }
+
+    onTouch(event:TouchGestureEventData): void {
+        if(event.action == 'up') {
+            this.count++;
+            this.text_x = event.getX();
+            this.text_y = event.getY();    
+        }
     }
 }
