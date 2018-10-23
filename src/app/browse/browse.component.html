@@ -3,7 +3,8 @@
 </ActionBar>
 
 <AbsoluteLayout >
-    <Label top="50" left="50" class="fa" text="&#xf1ea;" style="background-color:aqua"></Label>
-    <Label top="100" left="100"  text="<!-- Page content goes here -->" style="color:white; background-color: blue; border-width: 2; border-color: black"></Label>
-    <Label top="250" left="50"  text="test"></Label>
+    <Label top="{{icon_y}}" left="{{icon_x}}" class="fa" text="&#xf1ea;" style="background-color:aqua"></Label>
+    <Label top="{{text_y}}" left="{{text_x}}"  text="{{ 'click me' + count}}" 
+        style="color:white; background-color: blue; border-width: 2; border-color: black"></Label>
+    <Label top="{{label_y}}" left="{{label_x}}"  text="test"></Label>
 </AbsoluteLayout>
