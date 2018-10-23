@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { TouchGestureEventData } from "tns-core-modules/ui/gestures/gestures";
+import { EventData, View } from "tns-core-modules/ui/page/page";
+import { TabViewItem } from "ui/tab-view"
 
 @Component({
     selector: "Browse",
@@ -14,6 +16,9 @@ export class BrowseComponent implements OnInit {
     label_x = 50;
     label_y = 200;
     count = 0; 
+    timer = null;
+    view_width = 300;
+    view_height = 500;
 
     constructor() {
         // Use the component constructor to inject providers.
@@ -21,6 +26,10 @@ export class BrowseComponent implements OnInit {
 
     ngOnInit(): void {
         // Use the "ngOnInit" handler to initialize data for the view.
+        this.timer = setInterval(() => {
+            this.text_x = Math.floor(Math.random() * this.view_width);
+            this.text_y = Math.floor(Math.random() * this.view_height);
+        }, 1000);
     }
 
     onTouch(event:TouchGestureEventData): void {

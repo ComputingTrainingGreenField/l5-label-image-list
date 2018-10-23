@@ -2,9 +2,9 @@
     <Label class="action-bar-title" text="Browse"></Label>
 </ActionBar>
 
-<AbsoluteLayout (touch)="onTouch($event)">
+<AbsoluteLayout>
     <Label top="{{icon_y}}" left="{{icon_x}}" class="fa" text="&#xf1ea;" style="background-color:aqua"></Label>
-    <Label top="{{text_y}}" left="{{text_x}}"  text="{{ 'click me' + count}}" 
+    <Label top="{{text_y}}" left="{{text_x}}"  text="{{ 'click me' + count}}" (touch)="onTouch($event)"
         style="color:white; background-color: blue; border-width: 2; border-color: black"></Label>
     <Label top="{{label_y}}" left="{{label_x}}"  text="test"></Label>
 </AbsoluteLayout>
