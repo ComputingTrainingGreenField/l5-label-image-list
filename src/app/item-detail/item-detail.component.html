@@ -4,6 +4,7 @@
 </ActionBar>
 
 <StackLayout>
-    <Label class="m-10 h3" verticalAlignment="top" [text]="item.description"></Label>
-    <Image [src]="item.src"></Image>
+    <TextField [(ngModel)]="item.name" class="input input-border"></TextField>
+    <TextField [(ngModel)]="item.description" class="input input-border"></TextField>    
+    <Image [src]="item.src" (tap)="onTap()"></Image>
 </StackLayout>

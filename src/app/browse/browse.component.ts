@@ -21,4 +21,9 @@ export class BrowseComponent implements OnInit {
         // Use the "ngOnInit" handler to initialize data for the view.
     }
 
+    onTouch(event) {
+        if(event.action == 'down') {
+            this.itemList.push({x:event.getX(), y:event.getY(), text: " " + this.itemList.length + " "});
+        }
+    }
 }
