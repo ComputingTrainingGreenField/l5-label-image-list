@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { DataService, IDataItem } from "../core/data.service";
 import { ActivatedRoute } from "@angular/router";
+import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
 
 @Component({
     selector: "Home",
@@ -9,7 +10,7 @@ import { ActivatedRoute } from "@angular/router";
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
-    items: Array<IDataItem>;
+    items: ObservableArray<IDataItem>;
 
     constructor(private itemService: DataService, private router: RouterExtensions, private route: ActivatedRoute) { }
 
