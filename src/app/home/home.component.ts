@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
 
     onAdd() {
         let newId = this.items.length + 1;
-        let newItem = {id: newId, name: "Item " + newId, description: "Description for Item "+newId, src:"http://www.stleos.uq.edu.au/wp-content/uploads/2016/08/image-placeholder.png"};
+        let newItem = {id: newId, name: "Item " + newId, description: "Description for Item "+newId, src:"~/images/image-placeholder.png"};
         this.itemService.addItem(newItem);
         this.router.navigate(['../item', newId], { relativeTo: this.route});
     }
