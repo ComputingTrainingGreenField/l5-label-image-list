@@ -16,11 +16,7 @@ export class DataService {
     private baseUrl = "http://127.0.0.1:5000/";
 
     constructor() {
-        let dataService = this;
-        getJSON(this.baseUrl + "items/").then((r: IDataItem[]) => {
-            dataService.items.push(r);
-        }, (e) => {
-        });
+        this.fetchItems();
     }
 
     getItems(): ObservableArray<IDataItem> {
@@ -31,6 +27,14 @@ export class DataService {
         return this.items.filter((item) => item.id === id)[0];
     }
 
+    fetchItems() {
+        let dataService = this;
+        getJSON(this.baseUrl + "items/").then((r: IDataItem[]) => {
+            dataService.items.push(r);
+        }, (e) => {
+        });
+    }
+
     addItem(item: IDataItem) {
         this.items.push(item);
         request({
@@ -39,7 +43,6 @@ export class DataService {
             headers: { "Content-Type": "application/json" },
             content: JSON.stringify(item)
         }).then((response) => {
-            const result = response.content.toJSON();
         }, (e) => {
         });
     }
@@ -52,7 +55,6 @@ export class DataService {
             headers: { "Content-Type": "application/json" },
             content: JSON.stringify(item)
         }).then((response) => {
-            const result = response.content.toJSON();
         }, (e) => {
         });
     }
@@ -63,7 +65,6 @@ export class DataService {
             url: this.baseUrl + "items/" + item.id,
             method: "DELETE",
         }).then((response) => {
-            const result = response.content.toJSON();
         }, (e) => {
         });
     }
