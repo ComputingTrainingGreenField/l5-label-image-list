@@ -13,7 +13,7 @@ export interface IDataItem {
 export class DataService {
 
     private items = new ObservableArray<IDataItem>();
-    private baseUrl = "http://127.0.0.1:5000/";
+    private baseUrl = "http://139.180.200.49:5000/";
 
     constructor() {
         this.fetchItems();
@@ -29,6 +29,7 @@ export class DataService {
 
     fetchItems() {
         let dataService = this;
+        dataService.items.splice(0);
         getJSON(this.baseUrl + "items/").then((r: IDataItem[]) => {
             dataService.items.push(r);
         }, (e) => {
@@ -60,7 +61,12 @@ export class DataService {
     }
 
     deleteItem(item: IDataItem) {
-        this.items.splice(item.id - 1);
+        for(let i=0;i<this.items.length-1;i++) {
+            if(this.items[i].id == item.id) {
+                this.items.splice(i, 1);
+                break;
+            }
+        }
         request({
             url: this.baseUrl + "items/" + item.id,
             method: "DELETE",

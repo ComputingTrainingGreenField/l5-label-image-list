@@ -28,11 +28,14 @@ export class HomeComponent implements OnInit {
     }
 
     onSwipe(event: SwipeGestureEventData) {
-        console.log("Object that triggered the event: " + event.object);
         if(event.direction == SwipeDirection.left) {
             let layout = <GridLayout>event.object;
             let item = <IDataItem>layout.bindingContext;
             this.itemService.deleteItem(item);    
         }
+    }
+
+    onRefresh() {
+        this.itemService.fetchItems();
     }
 }
