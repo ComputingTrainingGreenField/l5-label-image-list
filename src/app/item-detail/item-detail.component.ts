@@ -86,5 +86,13 @@ export class ItemDetailComponent implements OnInit {
                 itemDetail.item.src = filePath;
             }    
         });
-    }    
+    }
+    
+    onItemNameChange(newValue) {
+        this.data.updateItem({id:this.item.id, name:newValue, description:this.item.description, src:this.item.src});
+    }
+
+    onItemDescriptionChange(newValue) {
+        this.data.updateItem({id:this.item.id, name:this.item.name, description:newValue, src:this.item.src});
+    }
 }

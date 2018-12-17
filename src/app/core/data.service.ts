@@ -49,7 +49,12 @@ export class DataService {
     }
 
     updateItem(item: IDataItem) {
-        this.items[item.id-1] = item;
+        for(let i=0;i<this.items.length;i++) {
+            if(this.items.getItem(i).id == item.id) {
+                this.items[i] = item;
+                break;
+            }
+        }
         request({
             url: this.baseUrl + "items/" + item.id,
             method: "PUT",
@@ -61,8 +66,8 @@ export class DataService {
     }
 
     deleteItem(item: IDataItem) {
-        for(let i=0;i<this.items.length-1;i++) {
-            if(this.items[i].id == item.id) {
+        for(let i=0;i<this.items.length;i++) {
+            if(this.items.getItem(i).id == item.id) {
                 this.items.splice(i, 1);
                 break;
             }
