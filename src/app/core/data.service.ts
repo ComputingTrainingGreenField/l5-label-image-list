@@ -1,4 +1,7 @@
 import { Injectable } from "@angular/core";
+import { getJSON, request } from "tns-core-modules/http";
+import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
+import * as bghttp from "nativescript-background-http";
 
 export interface IDataItem {
     id: number;
@@ -10,56 +13,104 @@ export interface IDataItem {
 @Injectable()
 export class DataService {
 
-    private items = new Array<IDataItem>(
-        {
-            id: 1,
-            name: "Item 1",
-            description: "Description for Item 1",
-            src: "https://www.rp.edu.sg/images/default-source/library/floor-directory/library-map-2018.png"
-        },
-        {
-            id: 2,
-            name: "Item 2",
-            description: "Description for Item 2",
-            src: "https://library.appstate.edu/sites/library.appstate.edu/files/floor_map_ll_201703.png"
-        },
-        {
-            id: 3,
-            name: "Item 3",
-            description: "Description for Item 3",
-            src: "https://www.libraries.rutgers.edu/sites/default/files/maps/chang_library.png"
-        },
-        {
-            id: 4,
-            name: "Item 4",
-            description: "Description for Item 4",
-            src: "https://library.gwu.edu/sites/default/files/communications/gelman-2nd-02.png"
-        },
-        {
-            id: 5,
-            name: "Item 5",
-            description: "Description for Item 5",
-            src: "https://www.wells.edu/files/public/library/library-first-floor.png"
-        },
-        {
-            id: 6,
-            name: "Item 6",
-            description: "Description for Item 6",
-            src: "https://www.uncp.edu/sites/default/files/2017-08/lib%20map%202nd%20floor.png"
-        },
-        {
-            id: 7,
-            name: "Item 7",
-            description: "Description for Item 7",
-            src: "https://www.cpp.edu/~library/about/about-the-library/library-floor-maps/images/Online-Maps_2ND%20Floor.png"
-        }
-    );
+    private items = new ObservableArray<IDataItem>();
+    private baseUrl = "http://139.180.200.49:5000/";
+    // private baseUrl = "http://127.0.0.1:5000/";
 
-    getItems(): Array<IDataItem> {
+    constructor() {
+        this.fetchItems();
+    }
+
+    getItems(): ObservableArray<IDataItem> {
         return this.items;
     }
 
     getItem(id: number): IDataItem {
         return this.items.filter((item) => item.id === id)[0];
+    }
+
+    fetchItems() {
+        let dataService = this;
+        dataService.items.splice(0);
+        getJSON(this.baseUrl + "items/").then((r: IDataItem[]) => {
+            dataService.items.push(r);
+        }, (e) => {
+        });
+    }
+
+    addItem(item: IDataItem) {
+        this.items.push(item);
+        request({
+            url: this.baseUrl + "items/",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify(item)
+        }).then((response) => {
+        }, (e) => {
+        });
+    }
+
+    updateItem(item: IDataItem) {
+        for(let i=0;i<this.items.length;i++) {
+            if(this.items.getItem(i).id == item.id) {
+                this.items[i] = item;
+                break;
+            }
+        }
+        request({
+            url: this.baseUrl + "items/" + item.id,
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify(item)
+        }).then((response) => {
+        }, (e) => {
+        });
+    }
+
+    deleteItem(item: IDataItem) {
+        for(let i=0;i<this.items.length;i++) {
+            if(this.items.getItem(i).id == item.id) {
+                this.items.splice(i, 1);
+                break;
+            }
+        }
+        request({
+            url: this.baseUrl + "items/" + item.id,
+            method: "DELETE",
+        }).then((response) => {
+        }, (e) => {
+        });
+    }
+
+    uploadFile(item: IDataItem, fileName: string, filePath: string) {
+        let dataService = this;
+        let session = bghttp.session("image-upload");
+        let request = {
+            url: this.baseUrl + "upload/",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/octet-stream",
+                "File-Name": fileName
+            },
+            description: "{ 'uploading': " + fileName + " }"
+        }
+        // let task = session.uploadFile(filePath, request);
+        var params = [
+            { name: "file", filename: filePath, mimeType: 'image/jpeg' }
+        ];
+        let task = session.multipartUpload(params, request);
+
+        console.log(request);
+        task.on("error", onError);
+        task.on("complete", onComplete);
+
+        function onError(e) {
+            console.log(e);
+        }
+
+        function onComplete(e) {
+            item.src = dataService.baseUrl + "static/" + fileName;
+            dataService.updateItem(item);
+        }
     }
 }

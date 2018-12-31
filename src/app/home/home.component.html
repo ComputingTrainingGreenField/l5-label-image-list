@@ -1,12 +1,13 @@
 <ActionBar class="action-bar">
     <Label class="action-bar-title" text="Home"></Label>
+    <ActionItem (tap)="onRefresh()" ios.systemIcon="13" ios.position="left" android.systemIcon="btn_star" android.position="actionBar"></ActionItem>
     <ActionItem (tap)="onAdd()" ios.systemIcon="4" ios.position="right" android.systemIcon="btn_plus" android.position="actionBar"></ActionItem>
 </ActionBar>
 
 <GridLayout class="page page-content">
     <ListView [items]="items" class="list-group">
         <ng-template let-item="item">
-            <GridLayout rows="100" columns="100, *" [nsRouterLink]="['../item', item.id]">
+            <GridLayout rows="100" columns="100, *" [nsRouterLink]="['../item', item.id]" (swipe)="onSwipe($event)">
                 <Image row="0" col="0" [src]="item.src"></Image>
                 <Label row="0" col="1" [text]="item.name" class="list-group-item"></Label>
             </GridLayout>

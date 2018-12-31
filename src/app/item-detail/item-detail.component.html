@@ -4,7 +4,7 @@
 </ActionBar>
 
 <StackLayout>
-    <TextField [(ngModel)]="item.name" class="input input-border"></TextField>
-    <TextField [(ngModel)]="item.description" class="input input-border"></TextField>    
+    <TextField [(ngModel)]="item.name" class="input input-border" (ngModelChange)="onItemNameChange($event)"></TextField>
+    <TextField [(ngModel)]="item.description" class="input input-border" (ngModelChange)="onItemDescriptionChange($event)"></TextField>    
     <Image [src]="item.src" (tap)="onTap()"></Image>
 </StackLayout>
