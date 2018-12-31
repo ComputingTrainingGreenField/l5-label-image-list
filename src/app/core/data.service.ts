@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { getJSON, request } from "tns-core-modules/http";
 import { ObservableArray } from "tns-core-modules/data/observable-array/observable-array";
+import * as bghttp from "nativescript-background-http";
 
 export interface IDataItem {
     id: number;
@@ -14,6 +15,7 @@ export class DataService {
 
     private items = new ObservableArray<IDataItem>();
     private baseUrl = "http://139.180.200.49:5000/";
+    // private baseUrl = "http://127.0.0.1:5000/";
 
     constructor() {
         this.fetchItems();
@@ -78,5 +80,37 @@ export class DataService {
         }).then((response) => {
         }, (e) => {
         });
+    }
+
+    uploadFile(item: IDataItem, fileName: string, filePath: string) {
+        let dataService = this;
+        let session = bghttp.session("image-upload");
+        let request = {
+            url: this.baseUrl + "upload/",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/octet-stream",
+                "File-Name": fileName
+            },
+            description: "{ 'uploading': " + fileName + " }"
+        }
+        // let task = session.uploadFile(filePath, request);
+        var params = [
+            { name: "file", filename: filePath, mimeType: 'image/jpeg' }
+        ];
+        let task = session.multipartUpload(params, request);
+
+        console.log(request);
+        task.on("error", onError);
+        task.on("complete", onComplete);
+
+        function onError(e) {
+            console.log(e);
+        }
+
+        function onComplete(e) {
+            item.src = dataService.baseUrl + "static/" + fileName;
+            dataService.updateItem(item);
+        }
     }
 }

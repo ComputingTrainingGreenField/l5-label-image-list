@@ -79,11 +79,12 @@ export class ItemDetailComponent implements OnInit {
         const source = new ImageSource();
         source.fromAsset(imageAsset).then(imageSource => {
             const folderPath: string = fs.knownFolders.documents().path;
-            const fileName = "item" + new Date().getTime() + ".png";
+            const fileName = "item_" + new Date().getTime() + ".jpg";
             const filePath = fs.path.join(folderPath, fileName);
-            const saved: boolean = imageSource.saveToFile(filePath, "png");
+            const saved: boolean = imageSource.saveToFile(filePath, "jpg");
             if (saved) {
                 itemDetail.item.src = filePath;
+                itemDetail.data.uploadFile(itemDetail.item, fileName, filePath);
             }    
         });
     }
